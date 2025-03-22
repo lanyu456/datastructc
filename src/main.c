@@ -1,8 +1,11 @@
-#include "sum.h"
+#include "linear_list.h"
 #include <stdio.h>
-
 int main(int argc, char **args)
 {
-    printf("哈喽Hello, from datat-structured! SUM:%d\n", sum(43, 65));
+    SequenceList seq_list;
+    InitSequenceList(&seq_list);
+    ShowSequenceList(&seq_list, ' ');
+    printf("Successfully exit!\n");
+
     return 0;
 }
