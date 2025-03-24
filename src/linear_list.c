@@ -1,13 +1,28 @@
 #include "linear_list.h"
 #include <stdio.h>
+#include <stdlib.h>
 
 void InitSequenceList(SequenceList *L)
 {
     if (L == NULL)
         return;
-    for (int i = 0; i < MaxSize; ++i)
-        L->data[i] = 0;
+    L->data = (int *)calloc(InitSize, sizeof(int));
+    L->max_size = InitSize;
     L->length = 0;
+}
+
+void ReallocList(SequenceList *L, int len)
+{
+    int *temp = realloc(L->data, (L->max_size + len) * sizeof(int));
+    if (temp != NULL)
+    {
+        L->data = temp;
+        L->max_size += len;
+    }
+    else
+    {
+        printf("内存不够，顺序表扩容失败。");
+    }
 }
 
 void ShowSequenceList(SequenceList *L, char sep)

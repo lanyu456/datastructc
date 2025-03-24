@@ -1,11 +1,12 @@
 #ifndef __LINEAR_LIST_H__
 #define __LINEAR_LIST_H__
 
-#define MaxSize 10
+#define InitSize 10
 
 typedef struct
 {
-    int data[MaxSize];
+    int *data;
+    int max_size;
     int length;
 } SequenceList;
 
