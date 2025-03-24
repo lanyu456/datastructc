@@ -12,31 +12,35 @@ typedef struct
     int length;
 } SequenceList;
 
-void InitSequenceList(SequenceList *L);
+bool InitSequenceList(SequenceList *list);
 
-void ReallocList(SequenceList *L, int len);
+void ReallocList(SequenceList *list, int delta);
 
-void ShowSequenceList(SequenceList *L, char sep);
+void ShowSequenceList(SequenceList *list, char separator);
 
-bool ListInsert(SequenceList *L, int index, int value);
+bool ListInsert(SequenceList *list, int index, int value);
 
-void sq_push(SequenceList *L, int value);
+void sq_push(SequenceList *list, int value);
 
-bool ListDelete(SequenceList *L, int index, int *result);
+bool ListDelete(SequenceList *list, int index, int *removed);
 
-int sq_pop(SequenceList *L);
+int sq_pop(SequenceList *list);
 
-inline int GetElem(SequenceList *L, int index) { return index > 0 && index < L->length ? L->data[index] : -1; }
+inline int GetElem(SequenceList *list, int index) { return index > 0 && index < list->length ? list->data[index] : -1; }
 
-int LocateElem(SequenceList *L, int target);
+int LocateElem(SequenceList *list, int target);
+
+void FreeSequenceList(SequenceList *list);
 
 // --------------LinkedList definition--------------
-typedef struct
+typedef struct NodeStruct
 {
     int data;
-    Node *next;
+    struct NodeStruct *next;
 } Node, *LinkedList;
 
-void InitLinkedList(LinkedList L);
+bool InitLinkedList(LinkedList list);
+
+bool LinkedListInsert(LinkedList list, int pos, int data);
 
 #endif // __LINEAR_LIST_H__

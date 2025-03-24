@@ -3,97 +3,98 @@
 #include <stdlib.h>
 
 // --------------SequenceList definition--------------
-void InitSequenceList(SequenceList *L)
+bool InitSequenceList(SequenceList *list)
 {
-    if (L == NULL)
-        return;
-    L->data = (int *)calloc(InitSize, sizeof(int));
-    L->max_size = InitSize;
-    L->length = 0;
+    if (list == NULL)
+        return false;
+    list->data = (int *)calloc(InitSize, sizeof(int));
+    list->max_size = InitSize;
+    list->length = 0;
+    return true;
 }
 
-void ReallocList(SequenceList *L, int len)
+void ReallocList(SequenceList *list, int delta)
 {
-    int *temp = realloc(L->data, (L->max_size + len) * sizeof(int));
+    int *temp = realloc(list->data, (list->max_size + delta) * sizeof(int));
     if (temp != NULL)
     {
-        L->data = temp;
-        L->max_size += len;
-        for (int i = L->length; i < L->max_size; ++i)
-            L->data[i] = 0;
+        list->data = temp;
+        list->max_size += delta;
+        for (int i = list->length; i < list->max_size; ++i)
+            list->data[i] = 0;
     }
     else
     {
         perror("Realloc Error:");
-        free(L->data);
+        free(list->data);
         exit(EXIT_FAILURE);
     }
 }
 
-void ShowSequenceList(SequenceList *L, char sep)
+void ShowSequenceList(SequenceList *list, char separator)
 {
-    if (L == NULL)
+    if (list == NULL)
         return;
-    if (L->length > 0)
+    if (list->length > 0)
     {
-        printf("%d", L->data[0]);
-        for (int i = 1; i < L->length; ++i)
-            printf("%c%d", sep, L->data[i]);
+        printf("%d", list->data[0]);
+        for (int i = 1; i < list->length; ++i)
+            printf("%c%d", separator, list->data[i]);
     }
     printf("\n");
 }
 
-bool ListInsert(SequenceList *L, int index, int value)
+bool ListInsert(SequenceList *list, int index, int value)
 {
-    if (index < 0 && index > L->length)
+    if (index < 0 && index > list->length)
         return false;
-    if (L->length >= L->max_size)
-        ReallocList(L, L->length);
+    if (list->length >= list->max_size)
+        ReallocList(list, list->length);
 
-    for (int i = L->length; i > index; --i)
-        L->data[i] = L->data[i - 1];
-    L->data[index] = value;
-    L->length++;
+    for (int i = list->length; i > index; --i)
+        list->data[i] = list->data[i - 1];
+    list->data[index] = value;
+    list->length++;
 
     return true;
 }
 
-void sq_push(SequenceList *L, int value)
+void sq_push(SequenceList *list, int value)
 {
-    if (L->length >= L->max_size)
-        ReallocList(L, L->length);
-    L->data[L->length] = value;
-    L->length++;
+    if (list->length >= list->max_size)
+        ReallocList(list, list->length);
+    list->data[list->length] = value;
+    list->length++;
 }
 
-bool ListDelete(SequenceList *L, int index, int *result)
+bool ListDelete(SequenceList *list, int index, int *removed)
 {
-    if (index < 0 && index >= L->length)
+    if (index < 0 && index >= list->length)
         return false;
-    *result = L->data[index];
-    for (int i = index; i < L->length - 1; ++i)
-        L->data[i] = L->data[i + 1];
-    L->data[L->length - 1] = 0;
-    L->length--;
+    *removed = list->data[index];
+    for (int i = index; i < list->length - 1; ++i)
+        list->data[i] = list->data[i + 1];
+    list->data[list->length - 1] = 0;
+    list->length--;
 
     return true;
 }
 
-int sq_pop(SequenceList *L)
+int sq_pop(SequenceList *list)
 {
-    if (L->length == 0)
+    if (list->length == 0)
         return -1;
-    int ret = L->data[L->length - 1];
-    L->data[L->length - 1] = 0;
-    L->length--;
+    int ret = list->data[list->length - 1];
+    list->data[list->length - 1] = 0;
+    list->length--;
     return ret;
 }
 
-int LocateElem(SequenceList *L, int target)
+int LocateElem(SequenceList *list, int target)
 {
     int index = -1;
-    for (int i = 0; i < L->length; ++i)
-        if (L->data[i] == target)
+    for (int i = 0; i < list->length; ++i)
+        if (list->data[i] == target)
         {
             index = i;
             break;
@@ -101,4 +102,25 @@ int LocateElem(SequenceList *L, int target)
     return index;
 }
 
+void FreeSequenceList(SequenceList *list)
+{
+    if (list != NULL)
+    {
+        free(list->data);
+        list->data = NULL;
+    }
+}
+
 // --------------LinkedList definition--------------
+bool InitLinkedList(LinkedList list)
+{
+    // The linkedlist with head node
+    list = (LinkedList)malloc(sizeof(Node));
+    if (list == NULL)
+        return false;
+    list->data = 0;
+    list->next = NULL;
+    return true;
+}
+
+bool LinkedListInsert(LinkedList list, int pos, int data) {}
