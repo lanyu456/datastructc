@@ -2,6 +2,7 @@
 #define __LINEAR_LIST_H__
 
 #include <stdbool.h>
+#include <stdlib.h>
 
 // --------------SequenceList definition--------------
 #define InitSize 10
@@ -10,25 +11,27 @@ typedef struct
     int *data;
     int max_size;
     int length;
-} SequenceList;
+} SequenceList, Stack;
 
 bool InitSequenceList(SequenceList *list);
 
-void ReallocList(SequenceList *list, int delta);
+bool SeqEmpty(SequenceList *list);
+
+void ReallocSequenceList(SequenceList *list, int delta);
 
 void ShowSequenceList(SequenceList *list, char separator);
 
-bool ListInsert(SequenceList *list, int index, int value);
+bool SequenceListInsertAt(SequenceList *list, int index, int value);
 
-void sq_push(SequenceList *list, int value);
+bool SequencePush(SequenceList *list, int value);
 
-bool ListDelete(SequenceList *list, int index, int *removed);
+bool SequenceListDeleteAt(SequenceList *list, int index, int *removed);
 
-int sq_pop(SequenceList *list);
+int SequencePop(SequenceList *list);
 
-inline int GetElem(SequenceList *list, int index) { return index > 0 && index < list->length ? list->data[index] : -1; }
+int SeqGetAt(SequenceList *list, int index);
 
-int LocateElem(SequenceList *list, int target);
+int SeqLocate(SequenceList *list, int target);
 
 void FreeSequenceList(SequenceList *list);
 
@@ -39,8 +42,64 @@ typedef struct NodeStruct
     struct NodeStruct *next;
 } Node, *LinkedList;
 
-bool InitLinkedList(LinkedList list);
+LinkedList InitLinkedList();
 
-bool LinkedListInsert(LinkedList list, int pos, int data);
+void ShowLinkedList(LinkedList list);
 
-#endif // __LINEAR_LIST_H__
+bool LinkedListInsertAt(LinkedList list, int pos, int data);
+
+Node *InsertAfterNode(Node *node, int data);
+
+Node *InsertBeforeNode(Node *node, int data);
+
+bool LinkedListDeleteAt(LinkedList list, int pos, int *removed);
+
+Node *LinkGetAt(LinkedList list, int pos);
+
+Node *LinkLocate(LinkedList list, int target);
+
+int LinkLength(LinkedList list);
+
+bool ReverseLinkedList(LinkedList list);
+
+bool LinkedListInsertHead(LinkedList list);
+
+bool LinkedListInsertTail(LinkedList list);
+
+void FreeLinkedList(LinkedList list);
+
+// --------------Double linkedList definition--------------
+typedef struct DNodeStruct
+{
+    int data;
+    struct DNodeStruct *prev, *next;
+} DNode, *DLinkedList;
+
+DLinkedList InitDLinkedList();
+
+bool DLLEmpty(DLinkedList dlist);
+
+DNode *InsertAfterDNode(DNode *node, int data);
+
+DNode *InsertBeforeDNode(DNode *node, int data);
+
+bool DeleteNextDNode(DLinkedList dlist);
+
+void FreeDLinkedList(DLinkedList dlist);
+
+// --------------Circle linkedList definition--------------
+typedef struct CNodeStruct
+{
+    int data;
+    struct CNodeStruct *next;
+} CNode, *CLinkedList;
+
+CLinkedList InitCLinkedList();
+
+void FreeCLinkedList(CLinkedList clist);
+
+bool CLLEmpty(CLinkedList clist);
+
+bool isTail(CLinkedList clist, CNode *cnode);
+
+#endif // __LINEAR_LIST_H__P
